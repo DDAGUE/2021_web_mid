@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>포트리스</title>
+    <title>당근 넣기</title>
     <style>
         body {
           margin: 0;
@@ -23,10 +23,18 @@
     <script>
         const canvas = document.getElementById("fortress");
         const ctx = canvas.getContext("2d");
+
+        var img = new Image();
+        var m_img = new Image();
+        var b_img = new Image();
+        img.src = "donkey.png";
+        m_img.src = "carrot.png";
+        b_img.src = "basket.png";
+        
         const width = canvas.width;
         const height = canvas.height;
-        const tankWidth = 50;
-        const tankHeight = 50;
+        const tankWidth = 100;
+        const tankHeight = 100;
         let tankX = 0;
         const tankDx = 3;
         let tankLeftPressed = false;
@@ -35,7 +43,7 @@
         let tankCenterY;
         let cannonAngle = Math.PI / 4;
         const cannonAngleDIF = Math.PI / 60;
-        const cannonLength = tankWidth * Math.sqrt(2);
+        const cannonLength = tankWidth / 2 * Math.sqrt(2);
         const targetWidth = Math.floor(Math.random() * 150 + 30);
         const targetHeight = Math.floor(Math.random() * 100 + 10);
         const targetX = Math.floor(Math.random() * (500 - targetWidth) + 500);
@@ -105,9 +113,7 @@
         };
         const drawMissile = () => {
             ctx.beginPath();
-            ctx.arc(missileX, missileY, missileRadius, 0, Math.PI * 2);
-            ctx.fillStyle = "blue";
-            ctx.fill();
+            ctx.drawImage(m_img, missileX, missileY, 20, 20);
             ctx.closePath();
         };
         const drawGausing = () => {
@@ -123,14 +129,7 @@
             ctx.stroke();
         };
         const drawTank = () => {
-            ctx.lineWidth = 5;
-            ctx.lineCap = "round";
-            ctx.beginPath();
-            ctx.moveTo(tankX, height - tankHeight);
-            ctx.lineTo(tankX + tankWidth, height - tankHeight);
-            ctx.lineTo(tankX + tankWidth, height);
-            ctx.lineTo(tankX, height);
-            ctx.lineTo(tankX, height - tankHeight);
+            ctx.drawImage(img, tankX, height - tankHeight, tankWidth, tankHeight)
             ctx.moveTo(tankCenterX, tankCenterY);
             ctx.lineTo(
                 tankCenterX + cannonLength * Math.cos(cannonAngle),
@@ -140,8 +139,7 @@
             ctx.closePath();
         };
         const drawTarget = () => {
-            ctx.fillRect(targetX, targetY, targetWidth, targetHeight);
-            ctx.fillStyle = "red";
+            ctx.drawImage(b_img, targetX, targetY, targetWidth, targetHeight);
         };
         draw();
         const keydownHandler = event => {
